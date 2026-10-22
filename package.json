@@ -1,0 +1,54 @@
+{
+  "name": "dsh-ayaka-theme",
+  "version": "0.1.0",
+  "description": "神里绫华主题：霜蓝、雪白与深海军蓝，动态壁纸与十一款表情。",
+  "type": "module",
+  "license": "MIT",
+  "author": "Link",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camellia2869438527-ops/dsh-ayaka-theme.git"
+  },
+  "homepage": "https://github.com/camellia2869438527-ops/dsh-ayaka-theme#readme",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "src",
+    "scripts",
+    "assets",
+    "cordis.patch.yml",
+    "README.md",
+    "NOTICE.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "theme",
+    "genshin",
+    "ayaka"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-theme",
+        "@deepseek-ai/dsh-client-ui-settings-general",
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    }
+  }
+}

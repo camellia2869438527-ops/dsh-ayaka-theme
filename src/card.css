@@ -1,0 +1,24 @@
+.ayaka-theme-card{padding:18px;border:1px solid var(--dsw-alias-border-l2);border-top:2px solid var(--ayaka-gold);border-radius:16px;background:var(--dsw-alias-bg-layer-1);color:var(--dsw-alias-label-primary)}
+.ayaka-theme-heading{display:flex;align-items:center;gap:8px}
+.ayaka-theme-heading h3{margin:0;font:inherit;font-weight:500;font-size:14px}
+.ayaka-theme-mark{color:var(--dsw-alias-brand-text);font-size:22px;line-height:1}
+.ayaka-theme-description,.ayaka-theme-status{margin:8px 0;color:var(--dsw-alias-label-secondary);font-size:13px;line-height:1.6}
+.ayaka-theme-options{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.ayaka-theme-options button{font:inherit;font-size:13px;line-height:1.5;min-height:40px;padding:9px 15px;border:1px solid var(--dsw-alias-border-l4);border-radius:10px;background:var(--dsw-alias-bg-layer-1);color:var(--dsw-alias-label-primary);cursor:pointer}
+.ayaka-theme-options button:hover{background:var(--dsw-alias-interactive-bg-hover)}
+.ayaka-theme-options button[aria-pressed=true]{background:var(--dsw-alias-brand-primary);color:var(--dsw-alias-label-primary-inverted);border-color:var(--dsw-alias-brand-primary)}
+.ayaka-theme-options button:focus-visible{outline:2px solid var(--dsw-alias-brand-text);outline-offset:3px}
+.ayaka-theme-swatches{display:flex;gap:7px;align-items:center;margin:12px 0}
+.ayaka-theme-swatch{width:19px;height:19px;border:1px solid var(--dsw-alias-border-l3);border-radius:50%}
+.ayaka-theme-status{min-height:21px}
+.ayaka-wallpaper-preview{height:170px;margin:-18px -18px 14px;overflow:hidden;border-radius:15px 15px 0 0;border-bottom:1px solid var(--ayaka-gold);background:#0B1524}
+.ayaka-wallpaper-preview video{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 37%}
+.ayaka-sticker{display:inline-block;flex-shrink:0;width:38px;height:38px;background-repeat:no-repeat;background-size:contain;background-position:center;vertical-align:middle}
+.ayaka-theme-options button{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:7px 11px}
+.ayaka-decoration-options{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0}
+.ayaka-decoration-options label{display:inline-flex;align-items:center;gap:7px;min-height:32px;cursor:pointer;font-size:13px}
+.ayaka-decoration-options input{accent-color:var(--dsw-alias-brand-primary);width:16px;height:16px}
+.ayaka-sticker-gallery{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;padding:10px 0;border-top:1px solid var(--dsw-alias-border-l2)}
+.ayaka-sticker-gallery>div{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--dsw-alias-label-secondary);font-size:11px;text-align:center}
+.ayaka-sticker-gallery .ayaka-sticker{width:56px;height:56px;max-width:100%;aspect-ratio:1}
+@media(max-width:600px){.ayaka-theme-card{padding:12px}.ayaka-wallpaper-preview{margin:-12px -12px 12px;height:140px}.ayaka-sticker-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}

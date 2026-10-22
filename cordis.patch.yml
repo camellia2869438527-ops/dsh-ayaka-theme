@@ -1,0 +1,4 @@
+# dsh bundle patch — inserts the Ayaka theme into a profile's layer stack.
+- insert:
+    - id: ayaka-theme
+      name: dsh-ayaka-theme
