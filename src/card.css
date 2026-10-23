@@ -22,3 +22,6 @@
 .ayaka-sticker-gallery>div{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--dsw-alias-label-secondary);font-size:11px;text-align:center}
 .ayaka-sticker-gallery .ayaka-sticker{width:56px;height:56px;max-width:100%;aspect-ratio:1}
 @media(max-width:600px){.ayaka-theme-card{padding:12px}.ayaka-wallpaper-preview{margin:-12px -12px 12px;height:140px}.ayaka-sticker-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ayaka-pet-size{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:13px;color:var(--dsw-alias-label-secondary)}
+.ayaka-pet-size input[type=range]{flex:1;accent-color:var(--dsw-alias-brand-primary)}
+.ayaka-pet-size output{min-width:48px;text-align:right;color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums}

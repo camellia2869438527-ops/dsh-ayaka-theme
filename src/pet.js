@@ -14,7 +14,7 @@ export function petCss() {
 @keyframes ayaka-talk{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 @keyframes ayaka-hop{0%{transform:translateY(0)}30%{transform:translateY(-14px) scale(1.03)}60%{transform:translateY(0)}80%{transform:translateY(-5px)}100%{transform:translateY(0)}}
 @media (prefers-reduced-motion: reduce){.ayaka-pet-body{animation:none}#ayaka-pet.ayaka-pet-talking .ayaka-pet-body,#ayaka-pet.ayaka-pet-hop .ayaka-pet-body{animation:none}}
-@media (max-width: 900px){#ayaka-pet{width:140px;right:14px;bottom:84px}}
+@media (max-width: 900px){#ayaka-pet{right:14px;bottom:84px}}
 `;
 }
 
@@ -104,7 +104,7 @@ export function installPet(controller, assets) {
   host.addEventListener('pointermove', onMove);
   host.addEventListener('pointerup', onUp);
 
-  const sync = () => { host.hidden = !snapshot().pet; };
+  const sync = () => { const s = snapshot(); host.hidden = !s.pet; host.style.width = (s.petSize || 180) + 'px'; };
   const unsubscribe = controller.subscribe(sync);
   sync();
 
