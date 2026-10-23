@@ -1,6 +1,7 @@
 import { PALETTES, OVERRIDES, ART_OVERRIDES } from './palette.js';
 import { createController, STORAGE_KEY } from './controller.js';
 import { artCss, installVideo } from './art.js';
+import { petCss, installPet } from './pet.js';
 
 export const inject = ['theme', 'slots', 'locale'];
 
@@ -13,7 +14,7 @@ export const dictionaries = {
     newer:'已有较新版本的设置，本版不会覆盖；当前切换仅临时生效。',
     invalid:'保存的设置无法识别，已恢复默认；重新选择即可保存。',
     palette:'主题配色', colorBlue:'霜蓝', colorWhite:'雪白', colorNavy:'深蓝', colorGold:'淡金', colorIce:'冰蓝',
-    wallpaper:'动态壁纸', stickers:'按钮表情',
+    wallpaper:'动态壁纸', stickers:'按钮表情', pet:'显示桌宠',
     artNote:'动态壁纸铺满整个窗口；侧栏与右栏为霜色玻璃。表情用于新会话、欢迎区、文件入口、评价和发送按钮；功能文字保留。',
     wallpaperNote:'关闭壁纸后仅保留配色。',
     stickerNote:'表情画廊：',
@@ -27,7 +28,7 @@ export const dictionaries = {
     newer:'Newer settings were found and will be preserved. Changes are temporary.',
     invalid:'Saved settings were not recognized. Choose an appearance to save again.',
     palette:'Theme palette', colorBlue:'Frost blue', colorWhite:'Snow white', colorNavy:'Navy', colorGold:'Pale gold', colorIce:'Ice',
-    wallpaper:'Motion wallpaper', stickers:'Button stickers',
+    wallpaper:'Motion wallpaper', stickers:'Button stickers', pet:'Desktop pet',
     artNote:'The motion wallpaper fills the whole window; the sidebar and right bar are frosted glass. Stickers decorate the new-session, welcome, file, feedback and send controls; functional text is kept.',
     wallpaperNote:'Turning the wallpaper off keeps colors only.',
     stickerNote:'Sticker gallery:',
@@ -58,7 +59,8 @@ export function makeCard(React, assets) {
         key, className:'ayaka-theme-swatch', style:{ background:colors[key] }, title:t(label), 'aria-label':t(label), role:'img'
       }))),
       h('div', { className:'ayaka-decoration-options' }, ['wallpaper','stickers'].map(name => h('label', { key:name },
-        h('input', { type:'checkbox', checked:state[name], disabled:!state.enabled, onChange:event=>controller.setDecoration(name, event.target.checked) }), t(name)))),
+        h('input', { type:'checkbox', checked:state[name], disabled:!state.enabled, onChange:event=>controller.setDecoration(name, event.target.checked) }), t(name))),
+        h('label', { key:'pet' }, h('input', { type:'checkbox', checked:state.pet, onChange:event=>controller.setPet(event.target.checked) }), t('pet'))),
       h('p', { className:'ayaka-theme-description' }, t('wallpaperNote')),
       h('p', { className:'ayaka-theme-description' }, t('artNote')),
       state.enabled && state.stickers ? h('div', { className:'ayaka-sticker-gallery' },
@@ -86,7 +88,7 @@ export function applyClient(ctx, React, css, assets) {
   ctx.effect(() => {
     const style = document.createElement('style');
     style.dataset.plugin = 'dsh-ayaka-theme';
-    style.textContent = css + '\n' + artCss(assets.stickers);
+    style.textContent = css + '\n' + artCss(assets.stickers) + '\n' + petCss();
     document.head.appendChild(style);
     return () => style.remove();
   });
@@ -109,6 +111,7 @@ export function applyClient(ctx, React, css, assets) {
       if (previousStickers === null) body.removeAttribute('data-ayaka-stickers'); else body.setAttribute('data-ayaka-stickers', previousStickers);
     };
   });
+  ctx.effect(() => installPet(controller, assets));
   ctx.effect(() => ctx.locale.register('settings.ayaka', dictionaries));
   ctx.slots.inject('settings.general.item', () => ctx.slots.register({
     name:'settings.general.item', id:'ayaka-theme', order:12, locale:'settings.ayaka', inject:() => ({ controller })

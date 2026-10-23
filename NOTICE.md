@@ -24,9 +24,12 @@ This theme is **non-commercial fan work**, not affiliated with or endorsed by mi
 | `assets/video.mp4` | 动态壁纸视频 | 抖音博主「翩翩」授权使用；原作与角色版权归 miHoYo / HoYoverse |
 | `assets/poster.jpg` | 壁纸封面（视频同帧静图） | 同上 |
 | `assets/stickers/0..10.webp` | 十一款 Q 版表情（原为白底 PNG，本仓库脚本抠白为透明 WebP） | 用户自制（自绘） |
+| `assets/pet.webp` | 桌宠立绘（原为棋盘格背景图，本仓库脚本去底裁剪） | 用户提供 / 自绘 |
+| `assets/voice/*.mp3` | 15 条桌宠语音 | 游戏内语音，非商业同人使用；版权归 miHoYo / HoYoverse |
 
-以上素材均为**非商业同人用途**；`assets/stickers/*` 由用户自绘，`assets/video.mp4` 与
-`assets/poster.jpg` 已获原博主「翩翩」授权。若权利方认为分发方式不妥，联系作者即移除。
+以上素材均为**非商业同人用途**；`assets/stickers/*` 与 `assets/pet.webp` 由用户自制，
+`assets/video.mp4` 与 `assets/poster.jpg` 已获原博主「翩翩」授权；语音为游戏内素材。
+若权利方认为分发方式不妥，联系作者即移除。
 
 ### 1.2 商用
 

@@ -9,6 +9,7 @@ export function createController(theme, storage, overrides, artOverrides = overr
   let enabled = true;
   let wallpaper = true;
   let stickers = true;
+  let pet = false;
   let storageState = 'saved';
   let readOnly = false;
   function read() {
@@ -24,20 +25,21 @@ export function createController(theme, storage, overrides, artOverrides = overr
       enabled = data.enabled;
       wallpaper = typeof data.wallpaper === 'boolean' ? data.wallpaper : true;
       stickers = typeof data.stickers === 'boolean' ? data.stickers : true;
+      pet = typeof data.pet === 'boolean' ? data.pet : false;
     } catch { storageState = 'unavailable'; }
   }
   function persist() {
     if (readOnly) return;
     try {
       if (!storage) throw new Error('storage unavailable');
-      storage.setItem(STORAGE_KEY, JSON.stringify({ version:1, enabled, wallpaper, stickers }));
+      storage.setItem(STORAGE_KEY, JSON.stringify({ version:1, enabled, wallpaper, stickers, pet }));
       storageState = 'saved';
     } catch { storageState = 'unavailable'; }
   }
   function publish() {
     if (disposed) return;
     const active = theme.getTheme();
-    snapshot = Object.freeze({ enabled, wallpaper, stickers, storageState, preference:active.preference, scheme:active.active.colorScheme });
+    snapshot = Object.freeze({ enabled, wallpaper, stickers, pet, storageState, preference:active.preference, scheme:active.active.colorScheme });
     for (const listener of listeners) listener();
   }
   function reconcile() {
@@ -53,7 +55,7 @@ export function createController(theme, storage, overrides, artOverrides = overr
     syncTheme: publish,
     syncStorage() {
       if (disposed) return;
-      enabled = true; wallpaper = true; stickers = true; readOnly = false; storageState = 'saved';
+      enabled = true; wallpaper = true; stickers = true; pet = false; readOnly = false; storageState = 'saved';
       read(); reconcile();
     },
     choose(mode) {
@@ -69,6 +71,11 @@ export function createController(theme, storage, overrides, artOverrides = overr
       if (name === 'wallpaper') wallpaper = value;
       else stickers = value;
       persist(); reconcile();
+    },
+    setPet(value) {
+      if (disposed || typeof value !== 'boolean') return;
+      pet = value;
+      persist(); publish();
     },
     dispose() {
       if (disposed) return;
