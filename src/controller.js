@@ -11,6 +11,7 @@ export function createController(theme, storage, overrides, artOverrides = overr
   let stickers = true;
   let pet = false;
   let petSize = 180;
+  let petVolume = 80;
   let storageState = 'saved';
   let readOnly = false;
   function read() {
@@ -27,21 +28,22 @@ export function createController(theme, storage, overrides, artOverrides = overr
       wallpaper = typeof data.wallpaper === 'boolean' ? data.wallpaper : true;
       stickers = typeof data.stickers === 'boolean' ? data.stickers : true;
       pet = typeof data.pet === 'boolean' ? data.pet : false;
-      petSize = Number.isFinite(data.petSize) ? Math.min(320, Math.max(100, Math.round(data.petSize))) : 180;
+      petSize = Number.isFinite(data.petSize) ? Math.min(320, Math.max(20, Math.round(data.petSize))) : 180;
+      petVolume = Number.isFinite(data.petVolume) ? Math.min(100, Math.max(0, Math.round(data.petVolume))) : 80;
     } catch { storageState = 'unavailable'; }
   }
   function persist() {
     if (readOnly) return;
     try {
       if (!storage) throw new Error('storage unavailable');
-      storage.setItem(STORAGE_KEY, JSON.stringify({ version:1, enabled, wallpaper, stickers, pet, petSize }));
+      storage.setItem(STORAGE_KEY, JSON.stringify({ version:1, enabled, wallpaper, stickers, pet, petSize, petVolume }));
       storageState = 'saved';
     } catch { storageState = 'unavailable'; }
   }
   function publish() {
     if (disposed) return;
     const active = theme.getTheme();
-    snapshot = Object.freeze({ enabled, wallpaper, stickers, pet, petSize, storageState, preference:active.preference, scheme:active.active.colorScheme });
+    snapshot = Object.freeze({ enabled, wallpaper, stickers, pet, petSize, petVolume, storageState, preference:active.preference, scheme:active.active.colorScheme });
     for (const listener of listeners) listener();
   }
   function reconcile() {
@@ -57,7 +59,7 @@ export function createController(theme, storage, overrides, artOverrides = overr
     syncTheme: publish,
     syncStorage() {
       if (disposed) return;
-      enabled = true; wallpaper = true; stickers = true; pet = false; petSize = 180; readOnly = false; storageState = 'saved';
+      enabled = true; wallpaper = true; stickers = true; pet = false; petSize = 180; petVolume = 80; readOnly = false; storageState = 'saved';
       read(); reconcile();
     },
     choose(mode) {
@@ -81,7 +83,12 @@ export function createController(theme, storage, overrides, artOverrides = overr
     },
     setPetSize(value) {
       if (disposed || !Number.isFinite(value)) return;
-      petSize = Math.min(320, Math.max(100, Math.round(value)));
+      petSize = Math.min(320, Math.max(20, Math.round(value)));
+      persist(); publish();
+    },
+    setPetVolume(value) {
+      if (disposed || !Number.isFinite(value)) return;
+      petVolume = Math.min(100, Math.max(0, Math.round(value)));
       persist(); publish();
     },
     dispose() {

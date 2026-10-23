@@ -10,6 +10,8 @@ export function petCss() {
 #ayaka-pet img{width:100%;display:block;pointer-events:none;-webkit-user-drag:none}
 #ayaka-pet.ayaka-pet-talking .ayaka-pet-body{animation:ayaka-talk .6s ease-in-out 3}
 #ayaka-pet.ayaka-pet-hop .ayaka-pet-body{animation:ayaka-hop .55s ease}
+.ayaka-pet-balance{position:absolute;left:50%;bottom:calc(100% - 6px);transform:translateX(-50%);background:rgba(13,23,38,.94);color:#EAF4FB;border:1px solid rgba(168,216,240,.32);border-radius:10px;padding:5px 10px;font:12px/18px system-ui,sans-serif;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .18s ease;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.ayaka-pet-balance.show{opacity:1}
 @keyframes ayaka-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015,.99)}}
 @keyframes ayaka-talk{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 @keyframes ayaka-hop{0%{transform:translateY(0)}30%{transform:translateY(-14px) scale(1.03)}60%{transform:translateY(0)}80%{transform:translateY(-5px)}100%{transform:translateY(0)}}
@@ -34,6 +36,11 @@ export function installPet(controller, assets) {
   host.appendChild(body);
   document.body.appendChild(host);
 
+  const tip = document.createElement('div');
+  tip.className = 'ayaka-pet-balance';
+  tip.setAttribute('role', 'status');
+  host.appendChild(tip);
+
   const audio = new Audio();
   audio.preload = 'auto';
   let pending = null;
@@ -43,8 +50,10 @@ export function installPet(controller, assets) {
     if (!snapshot().pet) return;
     const url = assets.voices[key];
     if (!url) return;
+    const level = Number.isFinite(snapshot().petVolume) ? snapshot().petVolume / 100 : 0.8;
+    if (level <= 0) return;
     audio.src = url;
-    audio.volume = 0.85;
+    audio.volume = level;
     const done = () => host.classList.remove('ayaka-pet-talking');
     audio.onended = done;
     audio.play().then(() => {
@@ -104,12 +113,40 @@ export function installPet(controller, assets) {
   host.addEventListener('pointermove', onMove);
   host.addEventListener('pointerup', onUp);
 
+  // Hover for one second -> account balance (host passthrough, cached 30s).
+  const formatBalance = (data) => {
+    if (!data || data.ok !== true) return data && data.reason === 'signed-out' ? '未登录' : '余额不可用';
+    const wallet = data.balance || {};
+    const list = Array.isArray(wallet.value) ? wallet.value : Array.isArray(wallet.wallets) ? wallet.wallets : [];
+    const pick = list.find(w => String(w.currency || '').toUpperCase() === 'CNY') || list[0];
+    const amount = pick ? Number(pick.balance) : NaN;
+    if (!Number.isFinite(amount)) return '余额不可用';
+    const cur = String(pick.currency || 'CNY');
+    const symbol = cur === 'CNY' ? '¥' : cur + ' ';
+    let text = '余额 ' + symbol + amount.toFixed(2);
+    const bonus = Array.isArray(wallet.bonusWallets) ? wallet.bonusWallets.find(w => Number(w.balance) > 0) : null;
+    if (bonus) text += ' · 赠送 ' + symbol + Number(bonus.balance).toFixed(2);
+    return text;
+  };
+  const showBalance = async () => {
+    tip.textContent = '余额读取中…';
+    tip.classList.add('show');
+    try {
+      const res = await fetch('/dsh-ayaka-theme/balance', { cache: 'no-store' });
+      tip.textContent = formatBalance(await res.json());
+    } catch { tip.textContent = '余额不可用'; }
+  };
+  let hoverTimer = 0;
+  host.addEventListener('pointerenter', () => { hoverTimer = setTimeout(showBalance, 1000); });
+  host.addEventListener('pointerleave', () => { clearTimeout(hoverTimer); tip.classList.remove('show'); });
+
   const sync = () => { const s = snapshot(); host.hidden = !s.pet; host.style.width = (s.petSize || 180) + 'px'; };
   const unsubscribe = controller.subscribe(sync);
   sync();
 
   return () => {
     clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearInterval(idle);
+    clearTimeout(hoverTimer);
     document.removeEventListener('pointerdown', unlock, true);
     document.removeEventListener('keydown', unlock, true);
     unsubscribe();

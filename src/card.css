@@ -25,3 +25,6 @@
 .ayaka-pet-size{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:13px;color:var(--dsw-alias-label-secondary)}
 .ayaka-pet-size input[type=range]{flex:1;accent-color:var(--dsw-alias-brand-primary)}
 .ayaka-pet-size output{min-width:48px;text-align:right;color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums}
+.ayaka-pet-volume{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:13px;color:var(--dsw-alias-label-secondary)}
+.ayaka-pet-volume input[type=range]{flex:1;accent-color:var(--dsw-alias-brand-primary)}
+.ayaka-pet-volume output{min-width:48px;text-align:right;color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums}
