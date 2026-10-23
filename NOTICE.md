@@ -21,12 +21,12 @@ This theme is **non-commercial fan work**, not affiliated with or endorsed by mi
 
 | 文件 | 内容 | 来源 / 授权 |
 | --- | --- | --- |
-| `assets/video.mp4` | 动态壁纸视频 | **待填**：由用户提供；发布前需登记绘制者/来源与是否允许再分发 |
+| `assets/video.mp4` | 动态壁纸视频 | 抖音博主「翩翩」授权使用；原作与角色版权归 miHoYo / HoYoverse |
 | `assets/poster.jpg` | 壁纸封面（视频同帧静图） | 同上 |
-| `assets/stickers/0..10.webp` | 十一款 Q 版表情（原为白底 PNG，本仓库脚本抠白为透明 WebP） | 同上 |
+| `assets/stickers/0..10.webp` | 十一款 Q 版表情（原为白底 PNG，本仓库脚本抠白为透明 WebP） | 用户自制（自绘） |
 
-发布前必须把「待填」换成真实的来源链（官方原作 → 绘制/加工者 → 本仓库），
-并确认授权允许**再分发**（不只是允许使用）。若素材来自他人，请附授权说明链接。
+以上素材均为**非商业同人用途**；`assets/stickers/*` 由用户自绘，`assets/video.mp4` 与
+`assets/poster.jpg` 已获原博主「翩翩」授权。若权利方认为分发方式不妥，联系作者即移除。
 
 ### 1.2 商用
 
